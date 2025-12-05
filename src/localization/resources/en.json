@@ -1,0 +1,53 @@
+{
+  "app": {
+    "title": "MinVærApp",
+    "description": "Weather Application"
+  },
+  "search": {
+    "placeholder": "Search by city",
+    "button": "Use my location",
+    "noResults": "No cities found",
+    "loading": "Searching..."
+  },
+  "weather": {
+    "temperature": "Temperature",
+    "feelsLike": "Feels like",
+    "humidity": "Humidity",
+    "wind": "Wind",
+    "windSpeed": "Wind Speed",
+    "pressure": "Pressure",
+    "visibility": "Visibility",
+    "uvIndex": "UV Index",
+    "description": "Description"
+  },
+  "recentSearches": {
+    "title": "Latest searches",
+    "empty": "No recent searches",
+    "clear": "Clear"
+  },
+  "emptyState": {
+    "title": "Get Started",
+    "searchMessage": "Search for a city to see its weather forecast",
+    "locationMessage": "Or allow location access to see weather for your current location",
+    "allowLocation": "Allow Location Access"
+  },
+  "errors": {
+    "locationPermission": "Location permission denied",
+    "locationUnavailable": "Location unavailable",
+    "weatherFetch": "Failed to fetch weather data",
+    "cityNotFound": "City not found",
+    "generic": "An error occurred"
+  },
+  "loading": {
+    "weather": "Loading weather...",
+    "location": "Getting your location..."
+  },
+  "language": {
+    "select": "Select language",
+    "en": "English"
+  },
+  "theme": {
+    "switchToLight": "Switch to light mode",
+    "switchToDark": "Switch to dark mode"
+  }
+}

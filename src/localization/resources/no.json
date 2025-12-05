@@ -1,0 +1,54 @@
+{
+  "app": {
+    "title": "MinVærApp",
+    "description": "Værapplikasjon"
+  },
+  "search": {
+    "placeholder": "Søk etter by",
+    "button": "Bruk min lokasjon",
+    "noResults": "Ingen byer funnet",
+    "loading": "Søker..."
+  },
+  "weather": {
+    "temperature": "Temperatur",
+    "feelsLike": "Føles som",
+    "humidity": "Luftfuktighet",
+    "wind": "Vind",
+    "windSpeed": "Vindhastighet",
+    "pressure": "Trykk",
+    "visibility": "Sikt",
+    "uvIndex": "UV-indeks",
+    "description": "Beskrivelse"
+  },
+  "recentSearches": {
+    "title": "Siste søk",
+    "empty": "Ingen nylige søk",
+    "clear": "Tøm"
+  },
+  "emptyState": {
+    "title": "Kom i gang",
+    "searchMessage": "Søk etter en by for å se værmeldingen",
+    "locationMessage": "Eller tillat lokasjonstilgang for å se været på din nåværende lokasjon",
+    "allowLocation": "Tillat lokasjonstilgang"
+  },
+  "errors": {
+    "locationPermission": "Lokasjonstillatelse avvist",
+    "locationUnavailable": "Lokasjon utilgjengelig",
+    "weatherFetch": "Kunne ikke hente væropplysninger",
+    "cityNotFound": "By ikke funnet",
+    "generic": "En feil oppstod"
+  },
+  "loading": {
+    "weather": "Henter vær...",
+    "location": "Henter din lokasjon..."
+  },
+  "language": {
+    "select": "Velg språk",
+    "en": "Engelsk",
+    "no": "Norsk"
+  },
+  "theme": {
+    "switchToLight": "Bytt til lyst modus",
+    "switchToDark": "Bytt til mørkt modus"
+  }
+}
