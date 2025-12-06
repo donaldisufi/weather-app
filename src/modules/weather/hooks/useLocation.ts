@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslation } from "react-i18next";
 import { useLocationStore } from "@/store/location.store";
 
 /**
@@ -10,7 +11,6 @@ const checkPermissionStatus = async (): Promise<
   "granted" | "prompt" | "denied"
 > => {
   if (!navigator.permissions) {
-    // Permissions API not supported, assume prompt state
     return "prompt";
   }
 
@@ -20,7 +20,6 @@ const checkPermissionStatus = async (): Promise<
     });
     return result.state as "granted" | "prompt" | "denied";
   } catch {
-    // If query fails, assume prompt state
     return "prompt";
   }
 };
@@ -31,22 +30,20 @@ const checkPermissionStatus = async (): Promise<
  * To read location data, use useLocationStore() directly.
  */
 export const useLocation = () => {
+  const { t } = useTranslation();
   const { setCoords, setLoading, setError } = useLocationStore();
 
   const requestLocation = async () => {
     if (!navigator.geolocation) {
-      setError("Geolocation is not supported by your browser");
+      setError(t("errors.geolocationNotSupported"));
       setLoading(false);
       return;
     }
 
-    // Check permission status first
     const permissionStatus = await checkPermissionStatus();
 
     if (permissionStatus === "denied") {
-      setError(
-        "Location permission was denied. Please enable it in your browser settings and try again."
-      );
+      setError(t("errors.locationPermissionDenied"));
       setLoading(false);
       return;
     }
@@ -67,11 +64,9 @@ export const useLocation = () => {
         setCoords(null);
         setLoading(false);
         if (error.code === error.PERMISSION_DENIED) {
-          setError(
-            "Location permission denied. Please enable it in your browser settings."
-          );
+          setError(t("errors.locationPermissionDeniedShort"));
         } else {
-          setError("Location unavailable");
+          setError(t("errors.locationUnavailable"));
         }
       },
       {

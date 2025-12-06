@@ -1,5 +1,6 @@
 "use client";
 
+import HandleEmptyState from "@/components/HandleStateWrappers/HandleEmptyState";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { useWeatherStore } from "@/store/recent-searches.store";
@@ -9,10 +10,6 @@ import { useTranslation } from "react-i18next";
 export const RecentSearches = () => {
   const { t } = useTranslation();
   const { searches, clearSearches, setSelectedCity } = useWeatherStore();
-
-  if (searches.length === 0) {
-    return null;
-  }
 
   const renderRecentSearches = () => {
     return searches.map((weather) => (
@@ -57,24 +54,26 @@ export const RecentSearches = () => {
   };
 
   return (
-    <div className="space-y-4">
-      <div className="flex items-center justify-between">
-        <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
-          {t("recentSearches.title")}
-        </h3>
-        <Button
-          variant="ghost"
-          size="sm"
-          onPress={clearSearches}
-          className="text-sm"
-        >
-          {t("recentSearches.clear")}
-        </Button>
-      </div>
+    <HandleEmptyState isEmpty={searches.length === 0}>
+      <div className="space-y-4">
+        <div className="flex items-center justify-between">
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+            {t("recentSearches.title")}
+          </h3>
+          <Button
+            variant="ghost"
+            size="sm"
+            onPress={clearSearches}
+            className="text-sm"
+          >
+            {t("recentSearches.clear")}
+          </Button>
+        </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
-        {renderRecentSearches()}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
+          {renderRecentSearches()}
+        </div>
       </div>
-    </div>
+    </HandleEmptyState>
   );
 };

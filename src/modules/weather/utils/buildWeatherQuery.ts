@@ -15,16 +15,13 @@ export const buildWeatherQuery = (
   selectedCity: CitySearchResult | null,
   coords: Coordinates | null
 ): string => {
-  // Priority 1: Use selected city if available
   if (selectedCity) {
     return `${selectedCity.lat},${selectedCity.lon}`;
   }
 
-  // Priority 2: Use location coordinates if available
   if (coords) {
     return `${coords.lat},${coords.lon}`;
   }
 
-  // No query if neither is available
   return "";
 };

@@ -13,8 +13,8 @@ export const useCurrentWeatherQuery = (query: string) => {
     queryKey: weatherQueryKeys.current(query),
     queryFn: () => getCurrentWeather(query),
     enabled: !!query && query.trim().length > 0,
-    staleTime: 5 * 60 * 1000, // 5 minutes
-    gcTime: 10 * 60 * 1000, // 10 minutes (formerly cacheTime)
+    staleTime: 5 * 60 * 1000,
+    gcTime: 10 * 60 * 1000,
   });
 };
 

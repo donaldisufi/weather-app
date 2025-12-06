@@ -22,11 +22,9 @@ export const LocationButton = () => {
 
   const handleUseLocationPress = () => {
     if (!coords) {
-      // Request location if we don't have coords yet
       requestLocation();
       return;
     }
-    // If we have coords, use current location for weather
     setUseCurrentLocation(true);
   };
 

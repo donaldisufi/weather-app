@@ -33,7 +33,10 @@
   },
   "errors": {
     "locationPermission": "Lokasjonstillatelse avvist",
+    "locationPermissionDenied": "Lokasjonstillatelse ble avvist. Vennligst aktiver den i nettleserinnstillingene og prøv igjen.",
+    "locationPermissionDeniedShort": "Lokasjonstillatelse avvist. Vennligst aktiver den i nettleserinnstillingene.",
     "locationUnavailable": "Lokasjon utilgjengelig",
+    "geolocationNotSupported": "Geolokasjon støttes ikke av nettleseren din",
     "weatherFetch": "Kunne ikke hente væropplysninger",
     "cityNotFound": "By ikke funnet",
     "generic": "En feil oppstod"

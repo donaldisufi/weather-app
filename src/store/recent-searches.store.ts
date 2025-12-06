@@ -24,12 +24,10 @@ export const useWeatherStore = create<WeatherStore>()(
       useCurrentLocation: true,
       addSearch: (weatherData: WeatherData) =>
         set((state) => {
-          // Remove duplicate if exists (same city)
           const filtered = state.searches.filter(
             (search) => search.name !== weatherData.name
           );
 
-          // Add new search at the beginning
           const newSearches = [weatherData, ...filtered].slice(
             0,
             MAX_RECENT_SEARCHES
@@ -52,5 +50,4 @@ export const useWeatherStore = create<WeatherStore>()(
   )
 );
 
-// Keep the old export for backward compatibility during migration
 export const useRecentSearchesStore = useWeatherStore;

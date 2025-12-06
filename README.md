@@ -11,6 +11,10 @@ Weather application built with Next.js that provides weather information for cit
 - 🌐 **Internationalization**: Support for English and Norwegian
 - 🎨 **Dynamic Gradients**: Weather-based background gradients that change based on conditions
 
+## Live Demo
+
+🌐 **Testing URL**: [https://my-weather-1.vercel.app/](https://my-weather-1.vercel.app/)
+
 ## Getting Started
 
 ### Prerequisites

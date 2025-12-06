@@ -1,28 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import dynamic from "next/dynamic";
 import { useTranslation } from "react-i18next";
 import { useSearchCitiesQuery } from "@/data/weather/weather.queries";
 import { useDebounce } from "@/hooks/useDebounce";
 import { useWeatherStore } from "@/store/recent-searches.store";
+import { ComboBox } from "@/components/ui/ComboBox";
 import type { CitySearchResult } from "@/data/weather/weather.models";
-import type { ComboBoxOption, ComboBoxProps } from "@/components/ui/ComboBox";
-
-const ComboBoxBase = dynamic(
-  () =>
-    import("@/components/ui/ComboBox").then((mod) => ({
-      default: mod.ComboBox,
-    })),
-  {
-    ssr: false,
-  }
-);
-
-// Type the ComboBox component for our specific use case
-const ComboBox = ComboBoxBase as <T extends ComboBoxOption>(
-  props: ComboBoxProps<T>
-) => React.ReactElement;
+import type { ComboBoxOption } from "@/components/ui/ComboBox";
 
 interface CitySearchProps {
   className?: string;

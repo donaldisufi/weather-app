@@ -33,7 +33,10 @@
   },
   "errors": {
     "locationPermission": "Location permission denied",
+    "locationPermissionDenied": "Location permission was denied. Please enable it in your browser settings and try again.",
+    "locationPermissionDeniedShort": "Location permission denied. Please enable it in your browser settings.",
     "locationUnavailable": "Location unavailable",
+    "geolocationNotSupported": "Geolocation is not supported by your browser",
     "weatherFetch": "Failed to fetch weather data",
     "cityNotFound": "City not found",
     "generic": "An error occurred"

@@ -57,7 +57,6 @@ export const WeatherDisplay = () => {
             <div
               className={cn(
                 "relative flex flex-col items-center justify-center gap-6 lg:gap-8 rounded-3xl p-8 md:p-12 lg:p-16",
-                "bg-linear-to-br",
                 gradient,
                 "transition-all duration-500 ease-in-out animate-fade-in",
                 "shadow-xl"
