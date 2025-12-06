@@ -12,7 +12,7 @@ import {
 } from "react-aria-components";
 import { cn } from "@/utils/cn";
 import { ChevronDown, Search } from "lucide-react";
-import { type Key } from "react";
+import { type Key, useRef } from "react";
 
 export interface ComboBoxOption {
   id: string | number;
@@ -47,21 +47,26 @@ export const ComboBox = <T extends ComboBoxOption>({
   className,
   "aria-label": ariaLabel,
 }: ComboBoxProps<T>) => {
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const handleSelectionChange = (key: Key | null) => {
+    if (!key) {
+      onSelectionChange?.(null);
+      return;
+    }
+    const selected =
+      options.find((opt) => String(opt.id) === String(key)) || null;
+    onSelectionChange?.(selected);
+    inputRef.current?.blur();
+  };
+
   return (
     <AriaComboBox
       items={options}
       inputValue={inputValue}
       onInputChange={onInputChange}
       selectedKey={value?.id ? String(value.id) : null}
-      onSelectionChange={(key: Key | null) => {
-        if (!key) {
-          onSelectionChange?.(null);
-          return;
-        }
-        const selected =
-          options.find((opt) => String(opt.id) === String(key)) || null;
-        onSelectionChange?.(selected);
-      }}
+      onSelectionChange={handleSelectionChange}
       className={cn("relative w-full", className)}
       aria-label={ariaLabel || label}
       isInvalid={!!errorMessage}
@@ -78,6 +83,7 @@ export const ComboBox = <T extends ComboBoxOption>({
           <Search className="h-5 w-5" />
         </div>
         <Input
+          ref={inputRef}
           className={cn(
             "flex h-12 w-full rounded-lg border border-gray-300 bg-white pl-10 pr-10 py-2 text-base",
             "text-gray-900 placeholder:text-gray-400",
