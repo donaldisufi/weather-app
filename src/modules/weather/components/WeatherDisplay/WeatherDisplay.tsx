@@ -3,7 +3,7 @@
 import HandleEmptyState from "@/components/HandleStateWrappers/HandleEmptyState";
 import HandleErrorState from "@/components/HandleStateWrappers/HandleErrorState";
 import HandleLoadingState from "@/components/HandleStateWrappers/HandleLoadingState";
-import { WeatherQueries } from "@/data/weather/weather.queries";
+import { useCurrentWeatherQuery } from "@/data/weather/weather.queries";
 import { buildWeatherQuery } from "@/modules/weather/utils/buildWeatherQuery";
 import { cn } from "@/utils/cn";
 import { getWeatherGradient } from "@/modules/weather/utils/getWeatherGradient";
@@ -28,7 +28,7 @@ export const WeatherDisplay = () => {
     data: weather,
     isLoading,
     error: weatherError,
-  } = WeatherQueries.useCurrentWeatherQuery(weatherQuery);
+  } = useCurrentWeatherQuery(weatherQuery);
 
   const gradient = getWeatherGradient(weather?.weatherCode, weather?.isDay);
 

@@ -3,12 +3,13 @@
 import { useState } from "react";
 import dynamic from "next/dynamic";
 import { useTranslation } from "react-i18next";
-import { WeatherQueries } from "@/data/weather/weather.queries";
+import { useSearchCitiesQuery } from "@/data/weather/weather.queries";
 import { useDebounce } from "@/hooks/useDebounce";
 import { useWeatherStore } from "@/store/recent-searches.store";
 import type { CitySearchResult } from "@/data/weather/weather.models";
+import type { ComboBoxOption, ComboBoxProps } from "@/components/ui/ComboBox";
 
-const ComboBox = dynamic(
+const ComboBoxBase = dynamic(
   () =>
     import("@/components/ui/ComboBox").then((mod) => ({
       default: mod.ComboBox,
@@ -18,14 +19,16 @@ const ComboBox = dynamic(
   }
 );
 
+// Type the ComboBox component for our specific use case
+const ComboBox = ComboBoxBase as <T extends ComboBoxOption>(
+  props: ComboBoxProps<T>
+) => React.ReactElement;
+
 interface CitySearchProps {
   className?: string;
 }
 
-interface ComboBoxOption {
-  id: string | number;
-  label: string;
-  description?: string;
+interface CityComboBoxOption extends ComboBoxOption {
   country: string;
   region: string;
   lat: number;
@@ -39,9 +42,9 @@ export const CitySearch = ({ className }: CitySearchProps) => {
   const debouncedQuery = useDebounce(searchQuery, 300);
 
   const { data: searchResults = [], isLoading: isSearching } =
-    WeatherQueries.useSearchCitiesQuery(debouncedQuery);
+    useSearchCitiesQuery(debouncedQuery);
 
-  const comboBoxOptions: ComboBoxOption[] = searchResults.map(
+  const comboBoxOptions: CityComboBoxOption[] = searchResults.map(
     (city: CitySearchResult) => ({
       id: city.id,
       label: city.name,
@@ -53,7 +56,7 @@ export const CitySearch = ({ className }: CitySearchProps) => {
     })
   );
 
-  const handleSelectionChange = (item: ComboBoxOption | null) => {
+  const handleSelectionChange = (item: CityComboBoxOption | null) => {
     if (item) {
       setSelectedCity({
         id: typeof item.id === "number" ? item.id : Number(item.id),

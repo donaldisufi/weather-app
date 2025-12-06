@@ -18,9 +18,8 @@ vi.mock("next/image", () => ({
 
 // Mock the weather API
 vi.mock("@/data/weather/weather.api", () => ({
-  WeatherApi: {
-    getCurrentWeather: vi.fn(),
-  },
+  getCurrentWeather: vi.fn(),
+  searchCities: vi.fn(),
 }));
 
 describe("WeatherDisplay Integration", () => {
@@ -70,7 +69,7 @@ describe("WeatherDisplay Integration", () => {
     };
 
     useWeatherStore.setState({ selectedCity: mockCity });
-    vi.mocked(WeatherApi.WeatherApi.getCurrentWeather).mockResolvedValueOnce(
+    vi.mocked(WeatherApi.getCurrentWeather).mockResolvedValueOnce(
       mockWeatherData
     );
 
@@ -92,14 +91,14 @@ describe("WeatherDisplay Integration", () => {
       coords: { lat: 40.7128, lon: -74.006 },
     });
 
-    vi.mocked(WeatherApi.WeatherApi.getCurrentWeather).mockResolvedValueOnce(
+    vi.mocked(WeatherApi.getCurrentWeather).mockResolvedValueOnce(
       mockWeatherData
     );
 
     renderWithProviders(<WeatherDisplay />);
 
     await waitFor(() => {
-      expect(WeatherApi.WeatherApi.getCurrentWeather).toHaveBeenCalledWith(
+      expect(WeatherApi.getCurrentWeather).toHaveBeenCalledWith(
         "40.7128,-74.006"
       );
     });
@@ -121,14 +120,14 @@ describe("WeatherDisplay Integration", () => {
       coords: { lat: 40.7128, lon: -74.006 },
     });
 
-    vi.mocked(WeatherApi.WeatherApi.getCurrentWeather).mockResolvedValueOnce(
+    vi.mocked(WeatherApi.getCurrentWeather).mockResolvedValueOnce(
       mockWeatherData
     );
 
     renderWithProviders(<WeatherDisplay />);
 
     await waitFor(() => {
-      expect(WeatherApi.WeatherApi.getCurrentWeather).toHaveBeenCalledWith(
+      expect(WeatherApi.getCurrentWeather).toHaveBeenCalledWith(
         "48.8566,2.3522"
       );
     });
@@ -146,7 +145,7 @@ describe("WeatherDisplay Integration", () => {
     };
 
     useWeatherStore.setState({ selectedCity: mockCity });
-    vi.mocked(WeatherApi.WeatherApi.getCurrentWeather).mockResolvedValueOnce(
+    vi.mocked(WeatherApi.getCurrentWeather).mockResolvedValueOnce(
       mockWeatherData
     );
 
@@ -164,7 +163,7 @@ describe("WeatherDisplay Integration", () => {
       coords: { lat: 40.7128, lon: -74.006 },
     });
 
-    vi.mocked(WeatherApi.WeatherApi.getCurrentWeather).mockResolvedValueOnce(
+    vi.mocked(WeatherApi.getCurrentWeather).mockResolvedValueOnce(
       mockWeatherData
     );
 
@@ -191,7 +190,7 @@ describe("WeatherDisplay Integration", () => {
     };
 
     useWeatherStore.setState({ selectedCity: mockCity });
-    vi.mocked(WeatherApi.WeatherApi.getCurrentWeather).mockImplementation(
+    vi.mocked(WeatherApi.getCurrentWeather).mockImplementation(
       () => new Promise(() => {}) // Never resolves
     );
 
@@ -214,7 +213,7 @@ describe("WeatherDisplay Integration", () => {
     };
 
     useWeatherStore.setState({ selectedCity: mockCity });
-    vi.mocked(WeatherApi.WeatherApi.getCurrentWeather).mockRejectedValueOnce(
+    vi.mocked(WeatherApi.getCurrentWeather).mockRejectedValueOnce(
       new Error("API Error")
     );
 
@@ -231,6 +230,6 @@ describe("WeatherDisplay Integration", () => {
     renderWithProviders(<WeatherDisplay />);
 
     // Should not call API
-    expect(WeatherApi.WeatherApi.getCurrentWeather).not.toHaveBeenCalled();
+    expect(WeatherApi.getCurrentWeather).not.toHaveBeenCalled();
   });
 });

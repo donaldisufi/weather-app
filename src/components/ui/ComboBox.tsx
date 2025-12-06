@@ -14,13 +14,13 @@ import { cn } from "@/utils/cn";
 import { ChevronDown, Search } from "lucide-react";
 import { type Key } from "react";
 
-interface ComboBoxOption {
+export interface ComboBoxOption {
   id: string | number;
   label: string;
   description?: string;
 }
 
-interface ComboBoxProps<T extends ComboBoxOption> {
+export interface ComboBoxProps<T extends ComboBoxOption> {
   options: T[];
   value?: T | null;
   onSelectionChange?: (item: T | null) => void;

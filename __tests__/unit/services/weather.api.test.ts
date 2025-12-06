@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
-import { WeatherApi } from "@/data/weather/weather.api";
+import { getCurrentWeather, searchCities } from "@/data/weather/weather.api";
 import type {
   CurrentWeatherResponse,
   CitySearchResult,
@@ -9,7 +9,7 @@ import type {
 const mockApiKey = "test-api-key";
 vi.stubEnv("NEXT_PUBLIC_WEATHER_API_KEY", mockApiKey);
 
-describe("WeatherApi", () => {
+describe("weather.api", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     global.fetch = vi.fn();
@@ -64,7 +64,7 @@ describe("WeatherApi", () => {
         json: async () => mockWeatherResponse,
       });
 
-      const result = await WeatherApi.getCurrentWeather("London");
+      const result = await getCurrentWeather("London");
 
       expect(global.fetch).toHaveBeenCalledWith(
         expect.stringContaining("current.json?q=London")
@@ -106,7 +106,7 @@ describe("WeatherApi", () => {
         json: async () => responseWithDoubleSlash,
       });
 
-      const result = await WeatherApi.getCurrentWeather("London");
+      const result = await getCurrentWeather("London");
 
       expect(result.iconUrl).toBe(
         "https://cdn.weatherapi.com/weather/64x64/day/116.png"
@@ -128,16 +128,16 @@ describe("WeatherApi", () => {
         json: async () => nightResponse,
       });
 
-      const result = await WeatherApi.getCurrentWeather("London");
+      const result = await getCurrentWeather("London");
 
       expect(result.isDay).toBe(false);
     });
 
     it("should throw error when query is empty", async () => {
-      await expect(WeatherApi.getCurrentWeather("")).rejects.toThrow(
+      await expect(getCurrentWeather("")).rejects.toThrow(
         "Query parameter is required"
       );
-      await expect(WeatherApi.getCurrentWeather("   ")).rejects.toThrow(
+      await expect(getCurrentWeather("   ")).rejects.toThrow(
         "Query parameter is required"
       );
     });
@@ -156,7 +156,7 @@ describe("WeatherApi", () => {
         json: async () => errorResponse,
       });
 
-      await expect(WeatherApi.getCurrentWeather("InvalidCity")).rejects.toThrow(
+      await expect(getCurrentWeather("InvalidCity")).rejects.toThrow(
         "Weather API Error 1006: No matching location found."
       );
     });
@@ -166,7 +166,7 @@ describe("WeatherApi", () => {
         new Error("Network error")
       );
 
-      await expect(WeatherApi.getCurrentWeather("London")).rejects.toThrow(
+      await expect(getCurrentWeather("London")).rejects.toThrow(
         "Network error"
       );
     });
@@ -177,7 +177,7 @@ describe("WeatherApi", () => {
         json: async () => ({ invalid: "data" }),
       });
 
-      await expect(WeatherApi.getCurrentWeather("London")).rejects.toThrow();
+      await expect(getCurrentWeather("London")).rejects.toThrow();
     });
 
     it("should encode query parameters correctly", async () => {
@@ -186,7 +186,7 @@ describe("WeatherApi", () => {
         json: async () => mockWeatherResponse,
       });
 
-      await WeatherApi.getCurrentWeather("New York");
+      await getCurrentWeather("New York");
 
       expect(global.fetch).toHaveBeenCalledWith(
         expect.stringContaining("q=New%20York")
@@ -222,7 +222,7 @@ describe("WeatherApi", () => {
         json: async () => mockSearchResponse,
       });
 
-      const result = await WeatherApi.searchCities("London");
+      const result = await searchCities("London");
 
       expect(global.fetch).toHaveBeenCalledWith(
         expect.stringContaining("search.json?q=London")
@@ -238,12 +238,12 @@ describe("WeatherApi", () => {
     });
 
     it("should return empty array when query is empty", async () => {
-      const result = await WeatherApi.searchCities("");
+      const result = await searchCities("");
       expect(result).toEqual([]);
     });
 
     it("should return empty array when query is only whitespace", async () => {
-      const result = await WeatherApi.searchCities("   ");
+      const result = await searchCities("   ");
       expect(result).toEqual([]);
     });
 
@@ -253,7 +253,7 @@ describe("WeatherApi", () => {
         json: async () => [],
       });
 
-      const result = await WeatherApi.searchCities("NonexistentCity");
+      const result = await searchCities("NonexistentCity");
 
       expect(result).toEqual([]);
     });
@@ -272,7 +272,7 @@ describe("WeatherApi", () => {
         json: async () => errorResponse,
       });
 
-      await expect(WeatherApi.searchCities("London")).rejects.toThrow(
+      await expect(searchCities("London")).rejects.toThrow(
         "Weather API Error 1003: Parameter 'q' not provided."
       );
     });
@@ -282,9 +282,7 @@ describe("WeatherApi", () => {
         new Error("Network error")
       );
 
-      await expect(WeatherApi.searchCities("London")).rejects.toThrow(
-        "Network error"
-      );
+      await expect(searchCities("London")).rejects.toThrow("Network error");
     });
 
     it("should encode query parameters correctly", async () => {
@@ -293,7 +291,7 @@ describe("WeatherApi", () => {
         json: async () => mockSearchResponse,
       });
 
-      await WeatherApi.searchCities("São Paulo");
+      await searchCities("São Paulo");
 
       expect(global.fetch).toHaveBeenCalledWith(
         expect.stringContaining("q=S%C3%A3o%20Paulo")

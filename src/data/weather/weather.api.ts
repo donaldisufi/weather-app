@@ -51,74 +51,76 @@ const transformWeatherData = (
   };
 };
 
-export const WeatherApi = {
-  getCurrentWeather: async (query: string): Promise<WeatherData> => {
-    if (!query.trim()) {
-      throw new Error("Query parameter is required");
+export const getCurrentWeather = async (
+  query: string
+): Promise<WeatherData> => {
+  if (!query.trim()) {
+    throw new Error("Query parameter is required");
+  }
+
+  const apiKey = getApiKey();
+  const url = `${WEATHER_API_BASE_URL}/current.json?q=${encodeURIComponent(
+    query
+  )}&key=${apiKey}`;
+
+  const response = await fetch(url);
+  const data = await response.json();
+
+  // Check for API errors
+  if (!response.ok || data.error) {
+    const errorData = weatherApiErrorSchema.safeParse(data);
+    if (errorData.success) {
+      throw new Error(
+        `Weather API Error ${errorData.data.error.code}: ${errorData.data.error.message}`
+      );
     }
+    throw new Error(`Failed to fetch weather: ${response.statusText}`);
+  }
 
-    const apiKey = getApiKey();
-    const url = `${WEATHER_API_BASE_URL}/current.json?q=${encodeURIComponent(
-      query
-    )}&key=${apiKey}`;
+  const validatedWeather = currentWeatherResponseSchema.parse(data);
+  return transformWeatherData(validatedWeather);
+};
 
-    const response = await fetch(url);
-    const data = await response.json();
+export const searchCities = async (
+  query: string
+): Promise<CitySearchResult[]> => {
+  if (!query.trim()) {
+    return [];
+  }
 
-    // Check for API errors
-    if (!response.ok || data.error) {
-      const errorData = weatherApiErrorSchema.safeParse(data);
-      if (errorData.success) {
-        throw new Error(
-          `Weather API Error ${errorData.data.error.code}: ${errorData.data.error.message}`
-        );
-      }
-      throw new Error(`Failed to fetch weather: ${response.statusText}`);
+  const apiKey = getApiKey();
+  const url = `${WEATHER_API_BASE_URL}/search.json?q=${encodeURIComponent(
+    query
+  )}&key=${apiKey}`;
+
+  const response = await fetch(url);
+  const data = await response.json();
+
+  // Check for API errors
+  if (!response.ok || data.error) {
+    const errorData = weatherApiErrorSchema.safeParse(data);
+    if (errorData.success) {
+      throw new Error(
+        `Weather API Error ${errorData.data.error.code}: ${errorData.data.error.message}`
+      );
     }
+    throw new Error(`Failed to search cities: ${response.statusText}`);
+  }
 
-    const validatedWeather = currentWeatherResponseSchema.parse(data);
-    return transformWeatherData(validatedWeather);
-  },
+  // If no results, return empty array
+  if (!Array.isArray(data) || data.length === 0) {
+    return [];
+  }
 
-  searchCities: async (query: string): Promise<CitySearchResult[]> => {
-    if (!query.trim()) {
-      return [];
-    }
+  const validatedData = citySearchResponseSchema.parse(data);
 
-    const apiKey = getApiKey();
-    const url = `${WEATHER_API_BASE_URL}/search.json?q=${encodeURIComponent(
-      query
-    )}&key=${apiKey}`;
-
-    const response = await fetch(url);
-    const data = await response.json();
-
-    // Check for API errors
-    if (!response.ok || data.error) {
-      const errorData = weatherApiErrorSchema.safeParse(data);
-      if (errorData.success) {
-        throw new Error(
-          `Weather API Error ${errorData.data.error.code}: ${errorData.data.error.message}`
-        );
-      }
-      throw new Error(`Failed to search cities: ${response.statusText}`);
-    }
-
-    // If no results, return empty array
-    if (!Array.isArray(data) || data.length === 0) {
-      return [];
-    }
-
-    const validatedData = citySearchResponseSchema.parse(data);
-
-    return validatedData.map((result) => ({
-      id: result.id,
-      name: result.name,
-      region: result.region,
-      country: result.country,
-      lat: result.lat,
-      lon: result.lon,
-      url: result.url,
-    }));
-  },
+  return validatedData.map((result) => ({
+    id: result.id,
+    name: result.name,
+    region: result.region,
+    country: result.country,
+    lat: result.lat,
+    lon: result.lon,
+    url: result.url,
+  }));
 };
