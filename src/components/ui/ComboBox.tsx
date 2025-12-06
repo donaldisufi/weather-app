@@ -13,6 +13,7 @@ import {
 import { cn } from "@/utils/cn";
 import { ChevronDown, Search } from "lucide-react";
 import { type Key, useRef } from "react";
+import { useTranslation } from "react-i18next";
 
 export interface ComboBoxOption {
   id: string | number;
@@ -47,6 +48,7 @@ export const ComboBox = <T extends ComboBoxOption>({
   className,
   "aria-label": ariaLabel,
 }: ComboBoxProps<T>) => {
+  const { t } = useTranslation();
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleSelectionChange = (key: Key | null) => {
@@ -111,7 +113,9 @@ export const ComboBox = <T extends ComboBoxOption>({
           className="max-h-60 overflow-auto rounded-lg border border-gray-200 bg-white shadow-lg dark:border-gray-700 dark:bg-gray-900 w-full"
           renderEmptyState={() => (
             <div className="px-4 py-2 text-sm text-gray-500">
-              {isLoading ? "Loading..." : "No results found"}
+              {isLoading
+                ? t("search.loadingResults")
+                : t("search.noResultsFound")}
             </div>
           )}
         >

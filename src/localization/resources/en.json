@@ -7,7 +7,9 @@
     "placeholder": "Search by city",
     "button": "Use my location",
     "noResults": "No cities found",
-    "loading": "Searching..."
+    "loading": "Searching...",
+    "loadingResults": "Loading...",
+    "noResultsFound": "No results found"
   },
   "weather": {
     "temperature": "Temperature",
